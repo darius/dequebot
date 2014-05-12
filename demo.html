@@ -3,7 +3,6 @@
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <meta http-equiv="encoding" content="utf-8">
   <script type="text/javascript" src="polyfill.js"></script>
-  <script type="text/javascript" src="animating.js"></script>
   <script type="text/javascript" src="terp.js"></script>
   <style type="text/css">
     input { font-family: courier, "courier new", monospace; }
@@ -11,6 +10,10 @@
   </style>
 </head>
 <body onload="start()">
+  <button id="faster" type="button">Faster</button>
+  <button id="slower" type="button">Slower</button>
+  <button id="pause"  type="button">Pause</button>
+  <br>
   <canvas id="canvas" width="500" height="500" style="border:1px solid black"></canvas>
   <span id="botstate"></span>
   <br><input type="text" size="15"><input id="send0" type="submit" value="0">: <input id="codebox0" type="text" size="20" value="fff1">
@@ -24,6 +27,9 @@
   <br><input type="text" size="15"><input id="send8" type="submit" value="8">: <input id="codebox8" type="text" size="20" value="">
   <br><input type="text" size="15"><input id="send9" type="submit" value="9">: <input id="codebox9" type="text" size="20" value="">
   <script>'use strict';
+    var faster = document.getElementById('faster');
+    var slower = document.getElementById('slower');
+    var pause = document.getElementById('pause');
     var canvas = document.getElementById('canvas');
     var botstate = document.getElementById('botstate');
     var senders = [];

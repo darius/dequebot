@@ -1,7 +1,9 @@
 'use strict';
 
 var dbg = 0;
+var maxInterval = 4 * 60;  // in frames, normally 60 frames/second
 
+var schedule = requestAnimationFrame;
 var Tau = 2 * Math.PI;
 
 function makeBot(program, turtle) {
@@ -88,7 +90,7 @@ function makeTurtle(x, y, heading, stepping) {
 }
 
 var ctx;
-
+var running, interval;
 var aProgram;
 var bot;
 
@@ -109,17 +111,47 @@ function start() {
         box.onchange = function() { aProgram[i] = box.value; }    
     });
     senders.forEach(function(button, i) {
-        button.onclick = function() { bot.receive('' + i); };
+        button.onclick = function() {
+            bot.receive('' + i);
+            botstate.innerHTML = bot.showState();
+        };
     });
 
+    faster.onclick = function() {
+        interval = Math.max(1, parseInt(interval/2));
+        speedbumped();
+    };
+    slower.onclick = function() {
+        interval = Math.min(maxInterval, interval*2);
+        speedbumped();
+    };
+    pause.onclick = function() {
+        running = !running;
+        pause.innerHTML = (running ? 'Pause' : 'Play');
+        if (running) {
+            nticks = 0;
+            schedule(tick);
+        }
+    }
+    function speedbumped() {
+        faster.disabled = (interval === 1);
+        slower.disabled = (interval === maxInterval);
+        nticks = 0;
+    }
+
     bot = makeBot(aProgram, turtle);
-    animating(tick);
+    running = true;
+    interval = maxInterval;
+    speedbumped();
+    schedule(tick);
 }
 
 var nticks = 0;
 
 function tick() {
-    if (nticks % 60 === 0) bot.run(1);
-    botstate.innerHTML = bot.showState();
+    if (!running) return;
+    if (nticks % interval === 0) bot.run(1);
+    botstate.innerHTML = bot.showState(); // XXX do this only on updates
     ++nticks;
+    schedule(tick);
 }
