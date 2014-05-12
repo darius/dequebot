@@ -13,12 +13,19 @@
 </head>
 <body onload="start()">
   <canvas id="canvas" width="500" height="500" style="border:1px solid black"></canvas>
-  <br><input id="send0" type="submit" value="0">: <input id="program0" type="text" size="20" value="fff1">
-  <br><input id="send1" type="submit" value="1">: <input id="program1" type="text" size="20" value="rflfrb">
-  <br><input id="send2" type="submit" value="2">: <input id="program2" type="text" size="20" value="">
-  <br><input id="send3" type="submit" value="3">: <input id="program3" type="text" size="20" value="">
+  <br><input id="send0" type="submit" value="0">: <input id="codebox0" type="text" size="20" value="fff1">
+  <br><input id="send1" type="submit" value="1">: <input id="codebox1" type="text" size="20" value="rflfrb">
+  <br><input id="send2" type="submit" value="2">: <input id="codebox2" type="text" size="20" value="">
+  <br><input id="send3" type="submit" value="3">: <input id="codebox3" type="text" size="20" value="">
   <script>'use strict';
     var canvas = document.getElementById('canvas');
-    var send0 = document.getElementById('send0');
+    var senders = [document.getElementById('send0'),
+                   document.getElementById('send1'),
+                   document.getElementById('send2'),
+                   document.getElementById('send3')]
+    var codeboxes = [document.getElementById('codebox0'),
+                     document.getElementById('codebox1'),
+                     document.getElementById('codebox2'),
+                     document.getElementById('codebox3')]
   </script>
 </body>

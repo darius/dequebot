@@ -83,9 +83,10 @@ function makeBot(x, y, heading, stepping) {
     };
 }
 
-var m;
 var ctx;
+
 var aProgram;
+var machine;
 
 function start() {
     var width = canvas.width;
@@ -95,23 +96,22 @@ function start() {
     ctx.scale(width/2, -height/2);
     ctx.lineWidth = 2/width;
 
-    aProgram = [program0.value, program1.value];
     var bot = makeBot(0, 0, Tau/4, 20/width);
-    m = makeMachine(aProgram, bot);
 
-    program0.onchange = function() { aProgram[0] = program0.value; }
-    program1.onchange = function() { aProgram[1] = program1.value; }
-    program2.onchange = function() { aProgram[2] = program2.value; }
-    program3.onchange = function() { aProgram[3] = program3.value; }
+    var i;
+    aProgram = [];
+    codeboxes.forEach(function(box, i) {
+        aProgram.push(box.value);
+        box.onchange = function() { aProgram[i] = box.value; }    
+    });
+    senders.forEach(function(button, i) {
+        button.onclick = function() { machine.receive('' + i); };
+    });
 
-    send0.onclick = function() { m.receive('0'); };
-    send1.onclick = function() { m.receive('1'); };
-    send2.onclick = function() { m.receive('2'); };
-    send3.onclick = function() { m.receive('3'); };
-
+    machine = makeMachine(aProgram, bot);
     animating(tick);
 }
 
 function tick() {
-    m.run(1);
+    machine.run(2);
 }
