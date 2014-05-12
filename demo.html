@@ -6,13 +6,13 @@
   <script type="text/javascript" src="animating.js"></script>
   <script type="text/javascript" src="terp.js"></script>
   <style type="text/css">
-    input {
-    font-family: courier, "courier new", monospace;
-    }
+    input { font-family: courier, "courier new", monospace; }
+    #botstate { font-family: courier, "courier new", monospace; }
   </style>
 </head>
 <body onload="start()">
   <canvas id="canvas" width="500" height="500" style="border:1px solid black"></canvas>
+  <span id="botstate"></span>
   <br><input type="text" size="15"><input id="send0" type="submit" value="0">: <input id="codebox0" type="text" size="20" value="fff1">
   <br><input type="text" size="15"><input id="send1" type="submit" value="1">: <input id="codebox1" type="text" size="20" value="rflfrb">
   <br><input type="text" size="15"><input id="send2" type="submit" value="2">: <input id="codebox2" type="text" size="20" value="">
@@ -25,6 +25,7 @@
   <br><input type="text" size="15"><input id="send9" type="submit" value="9">: <input id="codebox9" type="text" size="20" value="">
   <script>'use strict';
     var canvas = document.getElementById('canvas');
+    var botstate = document.getElementById('botstate');
     var senders = [];
     var codeboxes = [];
     (function() {

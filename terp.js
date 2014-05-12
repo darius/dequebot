@@ -6,6 +6,9 @@ var Tau = 2 * Math.PI;
 
 function makeMachine(program, bot) {
     var q = [];
+    function showState() {
+        return q.join('');
+    }
     function toString() {
         return program.toString() + ' / ' + q.toString();
     }
@@ -48,6 +51,7 @@ function makeMachine(program, bot) {
         run: run,
         step: step,
         toString: toString,
+        showState: showState,
     };
 }
 
@@ -112,6 +116,10 @@ function start() {
     animating(tick);
 }
 
+var nticks = 0;
+
 function tick() {
-    machine.run(2);
+    if (nticks % 60 === 0) machine.run(1);
+    botstate.innerHTML = machine.showState();
+    ++nticks;
 }
