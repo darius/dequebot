@@ -101,9 +101,13 @@ function start() {
 
     program0.onchange = function() { aProgram[0] = program0.value; }
     program1.onchange = function() { aProgram[1] = program1.value; }
+    program2.onchange = function() { aProgram[2] = program0.value; }
+    program3.onchange = function() { aProgram[3] = program1.value; }
 
     send0.onclick = function() { m.receive('0'); };
     send1.onclick = function() { m.receive('1'); };
+    send2.onclick = function() { m.receive('2'); };
+    send3.onclick = function() { m.receive('3'); };
 
     animating(tick);
 }
