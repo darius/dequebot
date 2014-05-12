@@ -54,11 +54,25 @@ function makeBot(program, turtle) {
         step: step,
         toString: toString,
         showState: showState,
+        turtle: turtle,
     };
 }
 
 function makeTurtle(x, y, heading, stepping) {
+    function show() {
+        if (dbg) console.log('turtle show', x, y, heading);
+        var h = stepping / 2; // for now
+        turtleCtx.beginPath();
+        turtleCtx.moveTo(x + h * Math.cos(heading + Tau/3),
+                         y + h * Math.sin(heading + Tau/3));
+        turtleCtx.lineTo(x + h * Math.cos(heading),
+                         y + h * Math.sin(heading));
+        turtleCtx.lineTo(x + h * Math.cos(heading - Tau/3),
+                         y + h * Math.sin(heading - Tau/3));
+        turtleCtx.stroke();
+    }
     function step(distance) {
+        ctx.beginPath();
         ctx.moveTo(x, y);
         x += distance * Math.cos(heading);
         y += distance * Math.sin(heading);
@@ -75,13 +89,14 @@ function makeTurtle(x, y, heading, stepping) {
     }
     function left() {
         if (dbg) console.log('left');
-        heading += Tau/16;
+        heading -= Tau/16;      // (left-handed coordinate system)
     }
     function right() {
         if (dbg) console.log('right');
-        heading -= Tau/16;
+        heading += Tau/16;      // (left-handed coordinate system)
     }
     return {
+        show: show,
         f: forward,
         b: backward,
         l: left,
@@ -89,20 +104,22 @@ function makeTurtle(x, y, heading, stepping) {
     };
 }
 
-var ctx;
+var ctx, turtleCtx;
 var running, interval;
 var aProgram;
 var bot;
+var width, height;
 
 function start() {
-    var width = canvas.width;
-    var height = canvas.height;
-    ctx = canvas.getContext('2d');
-    ctx.translate(width/2, height/2);
-    ctx.scale(width/2, -height/2);
-    ctx.lineWidth = 2/width;
+    width = canvas.width;
+    height = canvas.height;
 
-    var turtle = makeTurtle(0, 0, Tau/4, 20/width);
+    ctx = canvas.getContext('2d');
+
+    turtleCtx = turtling.getContext('2d');
+    turtleCtx.strokeStyle = 'red';
+
+    var turtle = makeTurtle(width/2, height/2, -Tau/4, 20);
 
     var i;
     aProgram = [];
@@ -150,8 +167,13 @@ var nticks = 0;
 
 function tick() {
     if (!running) return;
-    if (nticks % interval === 0) bot.run(1);
-    botstate.innerHTML = bot.showState(); // XXX do this only on updates
+    if (nticks % interval === 0) {
+        bot.run(1);
+        botstate.innerHTML = bot.showState();
+
+        turtleCtx.clearRect(0, 0, width, height);
+        bot.turtle.show();
+    }
     ++nticks;
     schedule(tick);
 }
