@@ -17,15 +17,21 @@
   <br><input id="send1" type="submit" value="1">: <input id="codebox1" type="text" size="20" value="rflfrb">
   <br><input id="send2" type="submit" value="2">: <input id="codebox2" type="text" size="20" value="">
   <br><input id="send3" type="submit" value="3">: <input id="codebox3" type="text" size="20" value="">
+  <br><input id="send4" type="submit" value="4">: <input id="codebox4" type="text" size="20" value="">
+  <br><input id="send5" type="submit" value="5">: <input id="codebox5" type="text" size="20" value="">
+  <br><input id="send6" type="submit" value="6">: <input id="codebox6" type="text" size="20" value="">
+  <br><input id="send7" type="submit" value="7">: <input id="codebox7" type="text" size="20" value="">
+  <br><input id="send8" type="submit" value="8">: <input id="codebox8" type="text" size="20" value="">
+  <br><input id="send9" type="submit" value="9">: <input id="codebox9" type="text" size="20" value="">
   <script>'use strict';
     var canvas = document.getElementById('canvas');
-    var senders = [document.getElementById('send0'),
-                   document.getElementById('send1'),
-                   document.getElementById('send2'),
-                   document.getElementById('send3')]
-    var codeboxes = [document.getElementById('codebox0'),
-                     document.getElementById('codebox1'),
-                     document.getElementById('codebox2'),
-                     document.getElementById('codebox3')]
+    var senders = [];
+    var codeboxes = [];
+    (function() {
+        for (var i = 0; i < 10; ++i) {
+            senders.push(document.getElementById('send'+i));
+            codeboxes.push(document.getElementById('codebox'+i));
+        }
+     })();
   </script>
 </body>
