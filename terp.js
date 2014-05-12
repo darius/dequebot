@@ -4,7 +4,7 @@ var dbg = 0;
 
 var Tau = 2 * Math.PI;
 
-function makeMachine(program, bot) {
+function makeBot(program, turtle) {
     var q = [];
     function showState() {
         return q.join('');
@@ -32,7 +32,7 @@ function makeMachine(program, bot) {
             case 'l':
             case 'r': {
                 q.splice(i, i+1);
-                bot[qi]();
+                turtle[qi]();
                 return true;
             }
             case '0':
@@ -55,7 +55,7 @@ function makeMachine(program, bot) {
     };
 }
 
-function makeBot(x, y, heading, stepping) {
+function makeTurtle(x, y, heading, stepping) {
     function step(distance) {
         ctx.moveTo(x, y);
         x += distance * Math.cos(heading);
@@ -90,7 +90,7 @@ function makeBot(x, y, heading, stepping) {
 var ctx;
 
 var aProgram;
-var machine;
+var bot;
 
 function start() {
     var width = canvas.width;
@@ -100,7 +100,7 @@ function start() {
     ctx.scale(width/2, -height/2);
     ctx.lineWidth = 2/width;
 
-    var bot = makeBot(0, 0, Tau/4, 20/width);
+    var turtle = makeTurtle(0, 0, Tau/4, 20/width);
 
     var i;
     aProgram = [];
@@ -109,17 +109,17 @@ function start() {
         box.onchange = function() { aProgram[i] = box.value; }    
     });
     senders.forEach(function(button, i) {
-        button.onclick = function() { machine.receive('' + i); };
+        button.onclick = function() { bot.receive('' + i); };
     });
 
-    machine = makeMachine(aProgram, bot);
+    bot = makeBot(aProgram, turtle);
     animating(tick);
 }
 
 var nticks = 0;
 
 function tick() {
-    if (nticks % 60 === 0) machine.run(1);
-    botstate.innerHTML = machine.showState();
+    if (nticks % 60 === 0) bot.run(1);
+    botstate.innerHTML = bot.showState();
     ++nticks;
 }
