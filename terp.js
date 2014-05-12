@@ -51,8 +51,7 @@ function makeMachine(program, bot) {
     };
 }
 
-function makeBot(x, y, heading) {
-    var stepping = 10/250;
+function makeBot(x, y, heading, stepping) {
     function step(distance) {
         ctx.moveTo(x, y);
         x += distance * Math.cos(heading);
@@ -86,16 +85,29 @@ function makeBot(x, y, heading) {
 
 var m;
 var ctx;
-var aProgram = ['fff1',
-                'rflfrb'];
+var aProgram;
 
 function start() {
+    var width = canvas.width;
+    var height = canvas.height;
     ctx = canvas.getContext('2d');
-    ctx.translate(250, 250);
-    ctx.scale(250, -250);
-    ctx.lineWidth = 1/250;
+    ctx.translate(width/2, height/2);
+    ctx.scale(width/2, -height/2);
+    ctx.lineWidth = 2/width;
 
-    
-    m = makeMachine(aProgram, makeBot(0, 0, Tau/4));
-    m.receive('0');
+    aProgram = [program0.value, program1.value];
+    var bot = makeBot(0, 0, Tau/4, 20/width);
+    m = makeMachine(aProgram, bot);
+
+    program0.onchange = function() { aProgram[0] = program0.value; }
+    program1.onchange = function() { aProgram[1] = program1.value; }
+
+    send0.onclick = function() { m.receive('0'); };
+    send1.onclick = function() { m.receive('1'); };
+
+    animating(tick);
+}
+
+function tick() {
+    m.run(1);
 }

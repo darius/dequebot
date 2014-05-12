@@ -3,11 +3,20 @@
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <meta http-equiv="encoding" content="utf-8">
   <script type="text/javascript" src="polyfill.js"></script>
+  <script type="text/javascript" src="animating.js"></script>
   <script type="text/javascript" src="terp.js"></script>
+  <style type="text/css">
+    input {
+    font-family: courier, "courier new", monospace;
+    }
+  </style>
 </head>
 <body onload="start()">
   <canvas id="canvas" width="500" height="500" style="border:1px solid black"></canvas>
-  <script>
+  <br><input id="send0" type="submit" value="0">: <input id="program0" type="text" size="20" style="font: monospace" value="fff1">
+  <br><input id="send1" type="submit" value="1">: <input id="program1" type="text" size="20" style="font: monospace" value="rflfrb">
+  <script>'use strict';
     var canvas = document.getElementById('canvas');
+    var send0 = document.getElementById('send0');
   </script>
 </body>
