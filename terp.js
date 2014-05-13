@@ -158,7 +158,7 @@ function start() {
 
     bot = makeBot(aProgram, turtle);
     running = true;
-    interval = maxInterval;
+    interval = 30;
     speedbumped();
     schedule(tick);
 }
