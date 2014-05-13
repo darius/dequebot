@@ -19,9 +19,9 @@
   <button id="pause"  type="button">Pause</button>
   <span id="botstate"></span>
   <br><input type="text" size="15"><input id="send0" type="submit" value="A">: <input id="codebox0" type="text" size="20" value="fffB">
-      <button id="doF" type="button">f</button> <button id="doB" type="button">b</button>
+      <input id="doB" type="submit" value="b"><input id="doF" type="submit" value="f">
   <br><input type="text" size="15"><input id="send1" type="submit" value="B">: <input id="codebox1" type="text" size="20" value=">f<f>b">
-      <button id="doLeft" type="button">&lt;</button> <button id="doRight" type="button">&gt;</button>
+      <input id="doLeft" type="submit" value="&lt;"><input id="doRight" type="submit" value="&gt;">
   <br><input type="text" size="15"><input id="send2" type="submit" value="C">: <input id="codebox2" type="text" size="20" value="">
   <br><input type="text" size="15"><input id="send3" type="submit" value="D">: <input id="codebox3" type="text" size="20" value="">
   <br><input type="text" size="15"><input id="send4" type="submit" value="E">: <input id="codebox4" type="text" size="20" value="">
@@ -37,8 +37,8 @@
     var faster  = document.getElementById('faster');
     var slower  = document.getElementById('slower');
     var pause   = document.getElementById('pause');
-    var doF     = document.getElementById('doF');
     var doB     = document.getElementById('doB');
+    var doF     = document.getElementById('doF');
     var doLeft  = document.getElementById('doLeft');
     var doRight = document.getElementById('doRight');
     var canvas   = document.getElementById('canvas');

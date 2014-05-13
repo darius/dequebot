@@ -169,10 +169,24 @@ function start() {
         slower.disabled = (interval === maxInterval);
         nticks = 0;
     }
-    doF.onclick     = function() { turtle.f();    reshowTurtle(); };
-    doB.onclick     = function() { turtle.b();    reshowTurtle(); };
-    doLeft.onclick  = function() { turtle['<'](); reshowTurtle(); };
-    doRight.onclick = function() { turtle['>'](); reshowTurtle(); };
+
+    function turtleDo(command) {
+        turtle[command]();
+        reshowTurtle();
+    }
+    doB.onclick     = function() { turtleDo('b'); }
+    doF.onclick     = function() { turtleDo('f'); }
+    doLeft.onclick  = function() { turtleDo('<'); }
+    doRight.onclick = function() { turtleDo('>'); }
+    function onKey(event) {
+        var key = String.fromCharCode(event.keyCode);
+        switch (key) {
+            case 'b': case 'f':
+            case '<': case '>':
+            turtleDo(key);
+        }
+    }
+    window.addEventListener('keypress', onKey, false);
 
     clear.onclick = function() { bot.clear(); };
     reset.onclick = function() {
