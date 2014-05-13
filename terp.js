@@ -169,13 +169,16 @@ function start() {
         slower.disabled = (interval === maxInterval);
         nticks = 0;
     }
+    doF.onclick     = function() { turtle.f();    reshowTurtle(); };
+    doB.onclick     = function() { turtle.b();    reshowTurtle(); };
+    doLeft.onclick  = function() { turtle['<'](); reshowTurtle(); };
+    doRight.onclick = function() { turtle['>'](); reshowTurtle(); };
+
     clear.onclick = function() { bot.clear(); };
     reset.onclick = function() {
         bot.reset();
-
         ctx.clearRect(0, 0, width, height);
-        turtleCtx.clearRect(0, 0, width, height);
-        bot.turtle.show();
+        reshowTurtle();
     };
 
     bot = makeBot(aProgram, turtle);
@@ -192,10 +195,13 @@ function tick() {
     if (nticks % interval === 0) {
         bot.run(1);
         botstate.innerHTML = bot.showState();
-
-        turtleCtx.clearRect(0, 0, width, height);
-        bot.turtle.show();
+        reshowTurtle();
     }
     ++nticks;
     schedule(tick);
+}
+
+function reshowTurtle() {
+    turtleCtx.clearRect(0, 0, width, height);
+    bot.turtle.show();
 }
