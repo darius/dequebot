@@ -8,6 +8,13 @@ var Tau = 2 * Math.PI;
 
 function makeBot(program, turtle) {
     var q = [];
+    function clear() {
+        q = [];
+    }
+    function reset() {
+        clear();
+        turtle.reset();
+    }
     function showState() {
         return q.join('');
     }
@@ -37,9 +44,9 @@ function makeBot(program, turtle) {
                 turtle[qi]();
                 return true;
             }
-            case '0': case '1': case '2': case '3': case '4':
-            case '5': case '6': case '7': case '8': case '9': {
-                var d = parseInt(qi);
+            case 'A': case 'C': case 'E': case 'G': case 'I':
+            case 'B': case 'D': case 'F': case 'H': case 'J': {
+                var d = qi.charCodeAt(0) - 65; // 'A'
                 var replacement = program[d].split('');
                 q.splice.apply(q, [i, i+1].concat(replacement)); // wow that was ugly
                 return true;
@@ -55,10 +62,16 @@ function makeBot(program, turtle) {
         toString: toString,
         showState: showState,
         turtle: turtle,
+        clear: clear,
+        reset: reset,
     };
 }
 
-function makeTurtle(x, y, heading, stepping) {
+function makeTurtle(x0, y0, heading0, stepping) {
+    var x = x0, y = y0, heading = heading0;
+    function reset() {
+        x = x0; y = y0; heading = heading0;
+    }
     function show() {
         if (dbg) console.log('turtle show', x, y, heading);
         var h = stepping / 2; // for now
@@ -96,6 +109,7 @@ function makeTurtle(x, y, heading, stepping) {
         heading += Tau/16;      // (left-handed coordinate system)
     }
     return {
+        reset: reset,
         show: show,
         f: forward,
         b: backward,
@@ -129,7 +143,7 @@ function start() {
     });
     senders.forEach(function(button, i) {
         button.onclick = function() {
-            bot.receive('' + i);
+            bot.receive(String.fromCharCode(65+i)); // A, B, C, ...
             botstate.innerHTML = bot.showState();
         };
     });
@@ -155,6 +169,14 @@ function start() {
         slower.disabled = (interval === maxInterval);
         nticks = 0;
     }
+    clear.onclick = function() { bot.clear(); };
+    reset.onclick = function() {
+        bot.reset();
+
+        ctx.clearRect(0, 0, width, height);
+        turtleCtx.clearRect(0, 0, width, height);
+        bot.turtle.show();
+    };
 
     bot = makeBot(aProgram, turtle);
     running = true;
