@@ -31,8 +31,8 @@ function makeBot(program, turtle) {
             switch (qi) {
             case 'b':
             case 'f':
-            case 'l':
-            case 'r': {
+            case '<':
+            case '>': {
                 q.splice(i, i+1);
                 turtle[qi]();
                 return true;
@@ -99,8 +99,8 @@ function makeTurtle(x, y, heading, stepping) {
         show: show,
         f: forward,
         b: backward,
-        l: left,
-        r: right,
+        '<': left,
+        '>': right,
     };
 }
 
