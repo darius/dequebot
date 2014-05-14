@@ -155,7 +155,7 @@ function start() {
         box.onchange = function() { aProgram[i] = box.value; }    
     });
     senders.forEach(function(button, i) {
-        button.onclick = function() { botDo(String.fromCharCode(65+i)); }; // A, B, C, ...
+        button.onclick = function() { botDo(this.value); }
     });
 
     faster.onclick = function() { bumpInterval(interval/2); };
