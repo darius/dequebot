@@ -35,22 +35,16 @@ function makeBot(program, turtle) {
     function step() {
         for (var i = 0; i < q.length; ++i) {
             var qi = q[i];
-            switch (qi) {
-            case 'b':
-            case 'f':
-            case '<':
-            case '>': {
+            if (turtle.commands.hasOwnProperty(qi)) {
                 q.splice(i, i+1);
-                turtle[qi]();
+                turtle.commands[qi]();
                 return true;
             }
-            case 'A': case 'C': case 'E': case 'G': case 'I':
-            case 'B': case 'D': case 'F': case 'H': case 'J': {
-                var d = qi.charCodeAt(0) - 65; // 'A'
+            var d = qi.charCodeAt(0) - 65; // 'A'
+            if (0 <= d && d < program.length) {
                 var replacement = program[d].split('');
                 q.splice.apply(q, [i, i+1].concat(replacement)); // wow that was ugly
                 return true;
-            }
             }
         }
         return false;
@@ -111,10 +105,12 @@ function makeTurtle(x0, y0, heading0, stepping) {
     return {
         reset: reset,
         show: show,
-        f: forward,
-        b: backward,
-        '<': left,
-        '>': right,
+        commands: {
+            f: forward,
+            b: backward,
+            '<': left,
+            '>': right,
+        },
     };
 }
 
@@ -174,7 +170,7 @@ function start() {
     }
 
     function turtleDo(command) {
-        turtle[command]();
+        turtle.commands[command]();
         reshowTurtle();
     }
     function turtleButtonClick() {
@@ -186,9 +182,7 @@ function start() {
     doRight.onclick = turtleButtonClick;
     function onKey(event) {
         var key = String.fromCharCode(event.keyCode);
-        switch (key) {
-            case 'b': case 'f':
-            case '<': case '>':
+        if (turtle.commands.hasOwnProperty(key)) {
             turtleDo(key);
         }
     }
