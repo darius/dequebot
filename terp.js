@@ -118,11 +118,28 @@ function makeTurtle(x0, y0, heading0, stepping) {
     };
 }
 
+var width, height;
 var ctx, turtleCtx;
 var running, interval;
 var aProgram;
 var bot;
-var width, height;
+
+function botDo(command) {
+    if (isUpperCase(command)) {
+        bot.receive(command);
+        botstate.innerHTML = bot.showState();
+    }
+}
+function isUpperCase(char) {
+    return char.toLowerCase() !== char;
+}
+
+function bumpInterval(newInterval) {
+    interval = Math.max(1, Math.min(parseInt(newInterval), maxInterval)); 
+    faster.disabled = (interval === 1);
+    slower.disabled = (interval === maxInterval);
+    nticks = 0;
+}
 
 function start() {
     width = canvas.width;
@@ -142,20 +159,11 @@ function start() {
         box.onchange = function() { aProgram[i] = box.value; }    
     });
     senders.forEach(function(button, i) {
-        button.onclick = function() {
-            bot.receive(String.fromCharCode(65+i)); // A, B, C, ...
-            botstate.innerHTML = bot.showState();
-        };
+        button.onclick = function() { botDo(String.fromCharCode(65+i)); }; // A, B, C, ...
     });
 
-    faster.onclick = function() {
-        interval = Math.max(1, parseInt(interval/2));
-        speedbumped();
-    };
-    slower.onclick = function() {
-        interval = Math.min(maxInterval, interval*2);
-        speedbumped();
-    };
+    faster.onclick = function() { bumpInterval(interval/2); };
+    slower.onclick = function() { bumpInterval(interval*2); };
     pause.onclick = function() {
         running = !running;
         pause.innerHTML = (running ? 'Pause' : 'Play');
@@ -163,11 +171,6 @@ function start() {
             nticks = 0;
             schedule(tick);
         }
-    }
-    function speedbumped() {
-        faster.disabled = (interval === 1);
-        slower.disabled = (interval === maxInterval);
-        nticks = 0;
     }
 
     function turtleDo(command) {
