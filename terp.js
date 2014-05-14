@@ -177,10 +177,13 @@ function start() {
         turtle[command]();
         reshowTurtle();
     }
-    doB.onclick     = function() { turtleDo('b'); }
-    doF.onclick     = function() { turtleDo('f'); }
-    doLeft.onclick  = function() { turtleDo('<'); }
-    doRight.onclick = function() { turtleDo('>'); }
+    function turtleButtonClick() {
+        turtleDo(this.value);
+    }
+    doB.onclick     = turtleButtonClick;
+    doF.onclick     = turtleButtonClick;
+    doLeft.onclick  = turtleButtonClick;
+    doRight.onclick = turtleButtonClick;
     function onKey(event) {
         var key = String.fromCharCode(event.keyCode);
         switch (key) {
@@ -200,8 +203,7 @@ function start() {
 
     bot = makeBot(aProgram, turtle);
     running = true;
-    interval = 15;
-    speedbumped();
+    bumpInterval(15);
     schedule(tick);
 }
 
