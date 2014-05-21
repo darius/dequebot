@@ -86,30 +86,19 @@ function makeTurtle(x0, y0, heading0, stepping) {
         ctx.lineTo(x, y);
         ctx.stroke();
     }
-    function forward() {
-        if (dbg) console.log('forward');
-        step(stepping);
-    }
-    function backward() {
-        if (dbg) console.log('backward');
-        step(-stepping);
-    }
-    function left() {
-        if (dbg) console.log('left');
-        heading -= Tau/16;      // (left-handed coordinate system)
-    }
-    function right() {
-        if (dbg) console.log('right');
-        heading += Tau/16;      // (left-handed coordinate system)
+    function turn(turning) {
+        heading -= turning;     // (left-handed coordinate system)
     }
     return {
         reset: reset,
         show: show,
+        step: step,
+        turn: turn,
         commands: {
-            f: forward,
-            b: backward,
-            '<': left,
-            '>': right,
+            f:   function() { step( stepping); },
+            b:   function() { step(-stepping); },
+            '<': function() { turn( Tau/16); },
+            '>': function() { turn(-Tau/16); },
         },
     };
 }
