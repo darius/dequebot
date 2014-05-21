@@ -62,32 +62,36 @@ function makeBot(program, turtle) {
 }
 
 function makeTurtle(x0, y0, heading0, stepping) {
-    var x = x0, y = y0, heading = heading0;
+    // heading is in units of 1 = 360 degrees to the left,
+    // with the 0 heading facing upwards.
+    var x = x0, y = y0, heading = heading0 % 1;
     function reset() {
-        x = x0; y = y0; heading = heading0;
+        x = x0; y = y0; heading = heading0 % 1;
     }
     function show() {
         if (dbg) console.log('turtle show', x, y, heading);
         var h = stepping / 2; // for now
+        var angle = Tau * (heading - 1/4);
         turtleCtx.beginPath();
-        turtleCtx.moveTo(x + h * Math.cos(heading + Tau/3),
-                         y + h * Math.sin(heading + Tau/3));
-        turtleCtx.lineTo(x + h * Math.cos(heading),
-                         y + h * Math.sin(heading));
-        turtleCtx.lineTo(x + h * Math.cos(heading - Tau/3),
-                         y + h * Math.sin(heading - Tau/3));
+        turtleCtx.moveTo(x + h * Math.cos(angle + Tau/3),
+                         y + h * Math.sin(angle + Tau/3));
+        turtleCtx.lineTo(x + h * Math.cos(angle),
+                         y + h * Math.sin(angle));
+        turtleCtx.lineTo(x + h * Math.cos(angle - Tau/3),
+                         y + h * Math.sin(angle - Tau/3));
         turtleCtx.stroke();
     }
     function step(distance) {
+        var angle = Tau * (heading - 1/4);
         ctx.beginPath();
         ctx.moveTo(x, y);
-        x += distance * Math.cos(heading);
-        y += distance * Math.sin(heading);
+        x += distance * Math.cos(angle);
+        y += distance * Math.sin(angle);
         ctx.lineTo(x, y);
         ctx.stroke();
     }
     function turn(turning) {
-        heading -= turning;     // (left-handed coordinate system)
+        heading = (heading - turning) % 1; // (left-handed coordinate system)
     }
     return {
         reset: reset,
@@ -97,8 +101,8 @@ function makeTurtle(x0, y0, heading0, stepping) {
         commands: {
             f:   function() { step( stepping); },
             b:   function() { step(-stepping); },
-            '<': function() { turn( Tau/16); },
-            '>': function() { turn(-Tau/16); },
+            '<': function() { turn( 1/16); },
+            '>': function() { turn(-1/16); },
         },
     };
 }
@@ -135,7 +139,7 @@ function start() {
     turtleCtx = turtling.getContext('2d');
     turtleCtx.strokeStyle = 'red';
 
-    var turtle = makeTurtle(width/2, height/2, -Tau/4, 20);
+    var turtle = makeTurtle(width/2, height/2, 0, 20);
 
     var i;
     aProgram = [];
